@@ -71,7 +71,7 @@ export class WSSecurityCert implements ISecurity {
       .replace('-----END CERTIFICATE-----', '')
       .replace(/(\r\n|\n|\r)/gm, '');
 
-    this.signer = new SignedXml(options?.signerOptions?.idMode);
+    this.signer = new SignedXml({idMode: options?.signerOptions?.idMode});
     if (options.signatureAlgorithm === 'http://www.w3.org/2001/04/xmldsig-more#rsa-sha256') {
       this.signer.signatureAlgorithm = options.signatureAlgorithm;
       this.signer.addReference(

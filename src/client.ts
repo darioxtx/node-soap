@@ -5,16 +5,17 @@
 
 import * as assert from 'assert';
 import * as debugBuilder from 'debug';
-import { EventEmitter } from 'events';
-import getStream = require('get-stream');
-import { IncomingHttpHeaders } from 'http';
+import {EventEmitter} from 'events';
+// import getStream from 'get-stream';
+import {IncomingHttpHeaders} from 'http';
 import * as _ from 'lodash';
-import { v4 as uuidv4 } from 'uuid';
-import { HttpClient } from './http';
-import { IHeaders, IHttpClient, IMTOMAttachments, IOptions, ISecurity, SoapMethod, SoapMethodAsync } from './types';
-import { findPrefix } from './utils';
-import { WSDL } from './wsdl';
-import { IPort, OperationElement, ServiceElement } from './wsdl/elements';
+import {v4 as uuidv4} from 'uuid';
+import {HttpClient} from './http';
+import {IHeaders, IHttpClient, IMTOMAttachments, IOptions, ISecurity, SoapMethod, SoapMethodAsync} from './types';
+import {findPrefix} from './utils';
+import {WSDL} from './wsdl';
+import {IPort, OperationElement, ServiceElement} from './wsdl/elements';
+import getStream from 'get-stream';
 
 const debug = debugBuilder('node-soap');
 
@@ -511,7 +512,7 @@ export class Client extends EventEmitter {
           getStream(res.data).then((body) => {
             this.lastResponse = body;
             this.lastElapsedTime = Date.now() - startTime;
-            this.lastResponseHeaders = res && res.headers;
+            this.lastResponseHeaders = res && (res.headers as IncomingHttpHeaders);
             // Added mostly for testability, but possibly useful for debugging
             this.lastRequestHeaders = res.config && res.config.headers || res.headers;
             this.emit('response', body, res, eid);
@@ -529,7 +530,7 @@ export class Client extends EventEmitter {
           this.wsdl.xmlToObject(res.data, (error, obj) => {
             this.lastResponse = res;
             this.lastElapsedTime = Date.now() - startTime;
-            this.lastResponseHeaders = res && res.headers;
+            this.lastResponseHeaders = res && (res.headers as IncomingHttpHeaders);
             // Added mostly for testability, but possibly useful for debugging
             this.lastRequestHeaders = res.config.headers;
             this.emit('response', '<stream>', res.data, eid);
